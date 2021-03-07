@@ -1,38 +1,23 @@
 const cuid = require("cuid");
-const { isEmail, isAlphanumeric } = require("validator");
+const { isAlphanumeric } = require("validator");
 const bcrypt = require("bcrypt");
 const db = require("../db");
 
 module.exports = {
   create,
   get,
-  User,
 };
 
 const SALT_ROUNDS = 10;
 
-function emailSchema(opts = {}) {
-  const { required } = opts;
-
-  return {
-    required: !!required,
-    type: String,
-    unique: true,
-    validate: {
-      validator: isEmail,
-      message: (prop) => `${prop.value} is not a valid email address`,
-    },
-  };
-}
-
 function usernameSchema() {
   return {
     type: String,
-    required: true,
+    required: [true, "username is required"],
     unique: true,
     lowercase: true,
-    minLength: 3,
-    maxLength: 16,
+    minLength: [3, "username must be atleast 3 characters"],
+    maxLength: [16, "too many characters man"],
     validate: [
       {
         validator: isAlphanumeric,
@@ -56,7 +41,6 @@ async function isUnique(doc, username) {
 const User = db.model("User", {
   _id: { type: String, default: cuid },
   username: usernameSchema(),
-  email: emailSchema({ required: true }),
   password: { type: String, maxLength: 120, required: true },
 });
 
@@ -73,8 +57,8 @@ async function get(username) {
 }
 
 async function hashPassword(user) {
-  if (!user.password) throw user.invalidate("passwort", "password is required");
+  if (!user.password) throw user.invalidate("password", "password is required");
   if (user.password.length < 8)
-    throw user.invalidate("password must be atleast 8 characters");
+    throw user.invalidate("password", "password must be atleast 8 characters");
   user.password = await bcrypt.hash(user.password, SALT_ROUNDS);
 }

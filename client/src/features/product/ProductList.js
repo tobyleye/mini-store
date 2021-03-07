@@ -24,9 +24,9 @@ import { Redirect } from "react-router";
 export default function ProductList() {
   const { categories, cart } = useSelector((state) => state.product);
   const { isAuthenticated, user } = useSelector((state) => state.user);
-  console.log("---user---", user);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const dispatch = useDispatch();
+
   const {
     isOpen: isSummaryOpen,
     onClose: onCloseSummary,

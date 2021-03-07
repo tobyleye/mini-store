@@ -39,7 +39,7 @@ export default function OrderSummary({ isOpen, onClose }) {
                 Your cart is empty.
               </Text>
             ) : (
-              <VStack spacing={8} mt={8}>
+              <VStack spacing={8} mt={8} justifyContent="flex-start">
                 {cart.map((product) => (
                   <Box key={product.id} display="flex">
                     <Image

@@ -9,6 +9,7 @@ export const userSlice = createSlice({
     isSignupLoading: false,
     loginError: null,
     signupError: null,
+    user: null,
   },
   reducers: {
     loginLoading(state, action) {
@@ -20,7 +21,8 @@ export const userSlice = createSlice({
     clearLoginError(state) {
       state.loginError = null;
     },
-    loginSuccess(state) {
+    loginSuccess(state, action) {
+      state.user = action.payload.user;
       state.isAuthenticated = true;
     },
     signupLoading(state, action) {

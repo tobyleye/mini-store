@@ -24,13 +24,13 @@ async function login(req, res, next) {
   const isUser = await bcrypt.compare(password, user.password);
   if (!isUser) return forbidden(next);
   const token = await sign({ username: user.username });
-  res.json({ success: true, token });
+  res.json({ success: true, token, user: { username } });
 }
 
 async function register(req, res) {
   const user = await User.create(req.body);
   const token = await sign({ username: user.username });
-  res.json({ success: true, token });
+  res.json({ success: true, token, user: { username: user.username } });
 }
 
 module.exports = autoCatch({

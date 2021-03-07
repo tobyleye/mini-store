@@ -23,8 +23,8 @@ import { Redirect } from "react-router";
 
 export default function ProductList() {
   const { categories, cart } = useSelector((state) => state.product);
-  const { isAuthenticated } = useSelector((state) => state.user);
-
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+  console.log("---user---", user);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const dispatch = useDispatch();
   const {
@@ -67,7 +67,7 @@ export default function ProductList() {
           {/* header --- greetings */}
           <Box mb={6} gridColumn={[null, null, 2]}>
             <Heading size="xl" mb={1} color="gray.800">
-              Hi Johndoe 👋
+              Hi {user.username} 👋
             </Heading>
             <Text color="gray.500" fontSize="xl">
               Find your daily products

@@ -32,9 +32,6 @@ export const userSlice = createSlice({
     clearSignupError(state) {
       state.signupError = null;
     },
-    signupSuccess(state) {
-      state.isAuthenticated = true;
-    },
   },
 });
 
@@ -59,7 +56,10 @@ export const login = ({ username, password }) => async (dispatch) => {
     const { data } = await client.post("/login", { username, password });
     dispatch(clearLoginError());
     dispatch(loginLoading(false));
-    dispatch(loginSuccess(data));
+    setTimeout(() => {
+      // wait a few ms before redirecting
+      dispatch(loginSuccess(data));
+    }, 500);
   } catch (error) {
     dispatch(loginLoading(false));
     dispatch(loginFailed(error.response.data.error));
@@ -72,7 +72,7 @@ export const register = ({ username, password }) => async (dispatch) => {
     const { data } = await client.post("/register", { username, password });
     dispatch(clearSignupError());
     dispatch(signupLoading(false));
-    dispatch(signupSuccess(data));
+    dispatch(loginSuccess(data));
   } catch (error) {
     dispatch(signupLoading(false));
     dispatch(signupFailed(error.response.data.error));

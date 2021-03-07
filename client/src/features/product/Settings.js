@@ -49,7 +49,11 @@ export default function Settings({ isOpen, onClose }) {
           <ModalBody>
             <VStack spacing={3}>
               {categories.map((category) => (
-                <FormControl display="flex" alignItems="center">
+                <FormControl
+                  key={category.id}
+                  display="flex"
+                  alignItems="center"
+                >
                   <FormLabel htmlFor={category.name} mb="0">
                     {category.name}
                   </FormLabel>

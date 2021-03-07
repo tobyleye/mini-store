@@ -8,106 +8,22 @@ import {
   Tab,
   TabPanel,
   Text,
-  SimpleGrid,
-  Image,
   Button,
-  useToast,
   Grid,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, updateCart } from "./productSlice";
-import store from "../../store.json";
+import { updateCart } from "./productSlice";
+
 import Settings from "./Settings";
 import OrderSummary from "./OrderSummary";
+import CategoryProducts from "./CategoryProducts";
 import { Redirect } from "react-router";
-
-const Product = ({ onAddToCart, ...product }) => {
-  return (
-    <Box>
-      <Box h={"150px"} bg="gray.500" mb={2}>
-        <Image objectFit="cover" src={product.imageUrl} w="full" h="full" />
-      </Box>
-      <Heading size="sm" color="gray.600" fontWeight={400}>
-        {product.name}
-      </Heading>
-      <Text fontWeight={700} fontSize="xl" color="gray.800">
-        ₦{product.price.toLocaleString()}
-      </Text>
-      <Button
-        isFullWidth
-        colorScheme="green"
-        onClick={() => onAddToCart(product)}
-      >
-        Add to cart
-      </Button>
-    </Box>
-  );
-};
-
-const ProductFilter = ({ category }) => {
-  const toast = useToast();
-  const { id: categoryId } = category;
-  const filteredProducts = store.products.filter(
-    (p) => p.categoryId === categoryId
-  );
-
-  const { cart } = useSelector((state) => state.product);
-  const dispatch = useDispatch();
-
-  // check if a product of this category has been added to cart
-  const categoryIsInCart = () => {
-    for (let product of cart) {
-      if (product.categoryId === categoryId) return true;
-    }
-    return false;
-  };
-
-  // add a product item to cart;
-  const _addToCart = (product) => {
-    // check if category is disabled
-    if (!category.active) {
-      toast({
-        title: "Error",
-        description: `${category.name} category is disabled. Enable category to purchase product in this category`,
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-      return;
-    }
-    // check if a product of this category is already in cart
-    if (categoryIsInCart()) {
-      toast({
-        title: "Error",
-        description: "you can purchase only ONE product per active category",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-      return;
-    }
-
-    dispatch(addToCart(product));
-    toast({
-      status: "success",
-      description: "Added to cart",
-    });
-  };
-
-  return (
-    <SimpleGrid spacing={5} columns={[1, 2, 3, 3]}>
-      {filteredProducts.map((product) => (
-        <Product key={product.id} {...product} onAddToCart={_addToCart} />
-      ))}
-    </SimpleGrid>
-  );
-};
 
 export default function ProductList() {
   const { categories, cart } = useSelector((state) => state.product);
-  const { isAuthentiated } = useSelector((state) => state.user);
+  const { isAuthenticated } = useSelector((state) => state.user);
 
   const { isOpen, onClose, onOpen } = useDisclosure();
   const dispatch = useDispatch();
@@ -120,9 +36,10 @@ export default function ProductList() {
   useEffect(() => {
     // watch categories and update cart if a category is disabled
     dispatch(updateCart());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categories]);
 
-  if (!isAuthentiated) {
+  if (!isAuthenticated) {
     return <Redirect to="/login" />;
   }
 
@@ -183,7 +100,7 @@ export default function ProductList() {
             <TabPanels>
               {categories.map((category, idx) => (
                 <TabPanel key={idx}>
-                  <ProductFilter category={category} />
+                  <CategoryProducts category={category} />
                 </TabPanel>
               ))}
             </TabPanels>

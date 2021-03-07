@@ -18,8 +18,8 @@ import { login, clearLoginError } from "./userSlice";
 
 export default function Login(params) {
   const [formdata, updateFormData] = useFormData({
-    username: "john",
-    password: "passwoord",
+    username: "",
+    password: "",
   });
   const dispatch = useDispatch();
   const { isLoginLoading, loginError, isAuthenticated } = useSelector(

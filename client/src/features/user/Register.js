@@ -18,8 +18,8 @@ import { register, clearSignupError } from "./userSlice";
 
 export default function Register() {
   const [formdata, updateFormData] = useFormData({
-    username: "johon",
-    password: "password",
+    username: "",
+    password: "",
   });
   const dispatch = useDispatch();
   const { isSignupLoading, signupError, isAuthenticated } = useSelector(

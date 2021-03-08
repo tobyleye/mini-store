@@ -1,10 +1,16 @@
 import axios from "axios";
 
+function getBaseURL() {
+  if (process.env.NODE_ENV === "production") {
+    return process.env.REACT_APP_BASE_URL;
+  }
+  return "http://localhost:4000";
+}
 class ApiClient {
-  constructor(token = "", baseURL = "http://localhost:4000") {
+  constructor(token = "") {
     this.token = token;
     this.axios = axios.create({
-      baseURL: baseURL,
+      baseURL: getBaseURL(),
     });
   }
   get(...args) {

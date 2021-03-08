@@ -32,6 +32,7 @@ export default function Register() {
     return () => {
       dispatch(clearSignupError());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const submitForm = (e) => {

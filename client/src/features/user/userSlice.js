@@ -54,9 +54,9 @@ export const {
 // code can then be executed and other actions can be dispatched
 export const login = ({ username, password }) => async (dispatch) => {
   dispatch(loginLoading(true));
+  dispatch(clearLoginError());
   try {
     const { data } = await client.post("/login", { username, password });
-    dispatch(clearLoginError());
     dispatch(loginLoading(false));
     setTimeout(() => {
       // wait a few ms before redirecting
@@ -69,10 +69,10 @@ export const login = ({ username, password }) => async (dispatch) => {
 };
 
 export const register = ({ username, password }) => async (dispatch) => {
+  dispatch(signupLoading(true));
+  dispatch(clearSignupError());
   try {
-    dispatch(signupLoading(true));
     const { data } = await client.post("/register", { username, password });
-    dispatch(clearSignupError());
     dispatch(signupLoading(false));
     dispatch(loginSuccess(data));
   } catch (error) {

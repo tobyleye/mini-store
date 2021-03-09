@@ -75,8 +75,16 @@ export default function ProductList() {
           </Box>
 
           {/*  tab list  */}
-          <Box flexShrink="0" gridRow={[null, null, 2]} mb={4}>
+          <Box
+            flexShrink="0"
+            gridRow={[null, null, 2]}
+            mb={4}
+            w="full"
+            overflow="hidden"
+          >
             <TabList
+              overflow="auto"
+              w="full"
               border={[null, null, "none"]}
               mr={6}
               flexDirection={[null, null, "column"]}

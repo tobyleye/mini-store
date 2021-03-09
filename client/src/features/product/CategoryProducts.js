@@ -2,7 +2,7 @@ import { SimpleGrid, useToast } from "@chakra-ui/react";
 import ProductItem from "./ProductItem";
 import { useDispatch, useSelector } from "react-redux";
 import store from "../../store.json";
-import { addToCart } from "./productSlice";
+import { addToCart, removeProductFromCart } from "./productSlice";
 
 export default function CategoryProducts({ category }) {
   const toast = useToast();
@@ -54,10 +54,25 @@ export default function CategoryProducts({ category }) {
     });
   };
 
+  // remove from cart
+  const _removeFromCart = (product) => {
+    dispatch(removeProductFromCart(product.id));
+  };
+
+  const isInCart = (productId) => {
+    return !!cart.find(({ id }) => id === productId);
+  };
+
   return (
     <SimpleGrid spacing={5} columns={[1, 2, 3, 3]}>
       {filteredProducts.map((product) => (
-        <ProductItem key={product.id} {...product} onAddToCart={_addToCart} />
+        <ProductItem
+          key={product.id}
+          {...product}
+          onAddToCart={_addToCart}
+          onRemoveFromCart={_removeFromCart}
+          isInCart={isInCart(product.id)}
+        />
       ))}
     </SimpleGrid>
   );

@@ -11,19 +11,20 @@ import {
   Button,
   Grid,
   useDisclosure,
+  HStack,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCart } from "./productSlice";
+import { logout } from "../user/userSlice";
 
 import Settings from "./Settings";
 import OrderSummary from "./OrderSummary";
 import CategoryProducts from "./CategoryProducts";
-import { Redirect } from "react-router";
 
 export default function ProductList() {
   const { categories, cart } = useSelector((state) => state.product);
-  const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const dispatch = useDispatch();
 
@@ -39,10 +40,6 @@ export default function ProductList() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categories]);
 
-  if (!isAuthenticated) {
-    return <Redirect to="/login" />;
-  }
-
   return (
     <Container maxW="960px">
       {/* settings modal */}
@@ -50,19 +47,19 @@ export default function ProductList() {
       {/*  order summary */}
       <OrderSummary isOpen={isSummaryOpen} onClose={onCloseSummary} />
 
-      <Box
+      <HStack
         as="header"
         display="flex"
         justifyContent="flex-end"
         alignItems="center"
         py={2}
+        spacing={2}
       >
-        <Button mr={2} onClick={onOpen}>
-          Settings
-        </Button>
+        <Button onClick={onOpen}>Settings</Button>
         <Button onClick={onSummaryOpen}>Cart({cart.length})</Button>
-      </Box>
-      <Tabs>
+        <Button onClick={() => dispatch(logout())}>Logout</Button>
+      </HStack>
+      <Tabs w="full">
         <Grid mt={4} gridTemplateColumns={[null, null, "auto 1fr"]}>
           {/* header --- greetings */}
           <Box mb={6} gridColumn={[null, null, 2]}>
@@ -83,7 +80,7 @@ export default function ProductList() {
             overflow="hidden"
           >
             <TabList
-              overflow="auto"
+              overflow={["auto", "auto", "initial"]}
               w="full"
               border={[null, null, "none"]}
               mr={6}

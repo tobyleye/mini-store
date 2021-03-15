@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import client from "../../client";
+import storage from "../../storage";
 
 export const userSlice = createSlice({
   name: "user",
@@ -34,6 +35,10 @@ export const userSlice = createSlice({
     clearSignupError(state) {
       state.signupError = null;
     },
+    clearSession(state) {
+      state.user = null;
+      state.isAuthenticated = false;
+    },
   },
 });
 
@@ -46,6 +51,7 @@ export const {
   signupFailed,
   signupSuccess,
   clearSignupError,
+  clearSession,
 } = userSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -58,6 +64,7 @@ export const login = ({ username, password }) => async (dispatch) => {
   try {
     const { data } = await client.post("/login", { username, password });
     dispatch(loginLoading(false));
+    await storage.saveSession(data);
     setTimeout(() => {
       // wait a few ms before redirecting
       dispatch(loginSuccess(data));
@@ -81,6 +88,10 @@ export const register = ({ username, password }) => async (dispatch) => {
   }
 };
 
+export const logout = () => async (dispatch) => {
+  await storage.clearSession();
+  dispatch(clearSession());
+};
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state) => state.counter.value)`

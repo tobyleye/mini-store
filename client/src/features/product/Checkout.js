@@ -9,17 +9,12 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router";
+import { useHistory } from "react-router";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 
 export default function Checkout() {
   const { cart } = useSelector((state) => state.product);
-  const { isAuthenticated } = useSelector((state) => state.user);
   const history = useHistory();
-
-  if (!isAuthenticated) {
-    return <Redirect to="/login" />;
-  }
 
   return (
     <Container>

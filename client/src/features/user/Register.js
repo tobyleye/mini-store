@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useFormData from "../../hooks/useFormdata";
 import { register, clearSignupError } from "./userSlice";
 
@@ -22,9 +22,7 @@ export default function Register() {
     password: "",
   });
   const dispatch = useDispatch();
-  const { isSignupLoading, signupError, isAuthenticated } = useSelector(
-    (state) => state.user
-  );
+  const { isSignupLoading, signupError } = useSelector((state) => state.user);
 
   console.log({ isSignupLoading, signupError });
 
@@ -39,8 +37,6 @@ export default function Register() {
     e.preventDefault();
     dispatch(register(formdata));
   };
-
-  if (isAuthenticated) return <Redirect to="/" />;
 
   return (
     <Container>

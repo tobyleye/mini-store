@@ -33,8 +33,7 @@ export default function Login(params) {
     return () => {
       dispatch(clearLoginError());
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   return (
     <Container>

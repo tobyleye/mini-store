@@ -18,16 +18,14 @@ function App() {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
 
-  console.log("---isauthenticated", isAuthenticated);
   useEffect(() => {
-    //before mounting app, check for saved session
+    // check for saved session
     storage.retrieveSession().then((session) => {
       if (session) {
         dispatch(loginSuccess(session));
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   return (
     <ChakraProvider>

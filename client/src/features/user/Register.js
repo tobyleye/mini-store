@@ -24,14 +24,11 @@ export default function Register() {
   const dispatch = useDispatch();
   const { isSignupLoading, signupError } = useSelector((state) => state.user);
 
-  console.log({ isSignupLoading, signupError });
-
   useEffect(() => {
     return () => {
       dispatch(clearSignupError());
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const submitForm = (e) => {
     e.preventDefault();

@@ -37,8 +37,7 @@ export default function ProductList() {
   useEffect(() => {
     // watch categories and update cart if a category is disabled
     dispatch(updateCart());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categories]);
+  }, [categories, dispatch]);
 
   return (
     <Container maxW="960px">

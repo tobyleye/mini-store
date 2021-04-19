@@ -82,6 +82,7 @@ export const register = ({ username, password }) => async (dispatch) => {
   dispatch(clearSignupError());
   try {
     const { data } = await client.post("/register", { username, password });
+    await storage.saveSession(data);
     dispatch(signupLoading(false));
     dispatch(loginSuccess(data));
   } catch (error) {

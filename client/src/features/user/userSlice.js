@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import client from "../../client";
 import storage from "../../storage";
 
+const FallbackErrorMessage = "An unexpected error occured";
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -16,8 +18,8 @@ export const userSlice = createSlice({
     loginLoading(state, action) {
       state.isLoginLoading = action.payload;
     },
-    loginFailed(state, action) {
-      state.loginError = action.payload;
+    loginFailed(state, { payload = FallbackErrorMessage }) {
+      state.loginError = payload;
     },
     clearLoginError(state) {
       state.loginError = null;
@@ -29,8 +31,8 @@ export const userSlice = createSlice({
     signupLoading(state, action) {
       state.isSignupLoading = action.payload;
     },
-    signupFailed(state, action) {
-      state.signupError = action.payload;
+    signupFailed(state, { payload = FallbackErrorMessage }) {
+      state.signupError = payload;
     },
     clearSignupError(state) {
       state.signupError = null;
@@ -71,7 +73,7 @@ export const login = ({ username, password }) => async (dispatch) => {
     }, 500);
   } catch (error) {
     dispatch(loginLoading(false));
-    dispatch(loginFailed(error.response.data.error));
+    dispatch(loginFailed(error.response?.data?.error));
   }
 };
 
@@ -84,7 +86,7 @@ export const register = ({ username, password }) => async (dispatch) => {
     dispatch(loginSuccess(data));
   } catch (error) {
     dispatch(signupLoading(false));
-    dispatch(signupFailed(error.response.data.error));
+    dispatch(signupFailed(error.response?.data?.error));
   }
 };
 

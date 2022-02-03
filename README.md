@@ -1,3 +1,3 @@
-# oneport365-frontend-interview
+# Mini Ecommerce Store
 
 [demo or it didn't happen](https://optimistic-khorana.netlify.app)
